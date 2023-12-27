@@ -15,13 +15,7 @@ Github Accounts:
   - ConnerParker97
   - P-suyash
 
-License: "CC BY"
-
-Copyright: 
-  N/A
-  
-Citation: 
-  N/A
+License: "GPL 3.0"
 
 Funding: "This project did not receive specific funding."
 ---
