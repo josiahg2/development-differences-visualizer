@@ -1,0 +1,129 @@
+---
+title: "Data Cleaning"
+author: "Suyash (lead), Josiah, and Conner"
+date: "2023-12-04"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+# Data
+
+```{r}
+hdr_data <- read_csv("../../data-raw/HDR21-22_Composite_indices_complete_time_series.csv")
+polity_data <- read_csv("../../data-raw/World_Bank_Data_Polity.csv")
+world_bank_data <- read_csv("../../data-raw/World_Bank_Data_New (Raw).csv")
+world_bank_class <- read_excel("../../data-raw/World_Bank_Classification.xlsx")
+```
+
+```{r}
+# Clean HDR Data
+hdr_data_cleaned <- hdr_data %>%
+  select(c(1:37)) %>%
+  select(c(-hdicode, -hdi_rank_2021)) %>%
+  rename(
+    `Country Name` = country,
+    `Country Code` = iso3,
+    Region = region
+  )
+```
+
+```{r}
+# Pivot the HDI score columns into a long format
+hdr_data_cleaned <- hdr_data_cleaned %>%
+  pivot_longer(
+    cols = starts_with("hdi_"),
+    names_to = "Year", 
+    values_to = "HDI Score",
+    names_prefix = "hdi_" 
+  ) %>%
+  mutate(Year = as.numeric(Year)) 
+
+glimpse(hdr_data_cleaned)
+```
+
+```{r}
+# Bind World Bank Datasets & Arrange them
+
+world_bank_data <- world_bank_data %>%
+  bind_rows(polity_data) %>%
+  arrange(`Country Code`,`Country Name`)
+
+``` 
+  
+```{r}  
+# Clean World Bank Data
+
+  # Remove the `Series Code` column
+  world_bank_data <- world_bank_data %>%
+    select(-`Series Code`)
+  
+  # Rename the year columns to remove square brackets and everything inside them
+  world_bank_data <- world_bank_data %>%
+    rename_with(~str_remove_all(., "\\[.*\\]"), .cols = contains("YR"))
+  
+  # Pivot the year columns longer
+  world_bank_data_long <- world_bank_data %>%
+    pivot_longer(
+      cols = -c(`Country Name`, `Country Code`, `Series Name`), 
+      names_to = "Year",
+      values_to = "Value"
+    ) %>%
+    mutate(Year = str_extract(Year, "\\d+")) %>%
+    filter(Year >= "1960")  
+  
+  # Pivot the `Series Name` column wider
+  world_bank_data_wide <- world_bank_data_long %>%
+    pivot_wider(
+      names_from = `Series Name`,
+      values_from = Value
+    ) %>%
+    mutate(Year = as.numeric(Year))
+  
+  # View the structure of the cleaned World Bank data
+  glimpse(world_bank_data_wide)
+```
+  
+```{r}
+# Combine datasets
+combined_data_cleaned <- hdr_data_cleaned %>%
+  full_join(world_bank_data_wide, by = c("Country Code", "Year")) %>%
+  left_join(world_bank_class, by = join_by("Country Code" == "Code"))
+
+variables_to_rename <- c(
+  "Country name" = "Economy",
+  "Region" = "Region.y",
+  "Income group" = "Income group",
+  "Year" = "Year",
+  "GDP per capita" = "GDP per capita (current US$)",
+  "GDP" = "GDP (current US$)",
+  "R&D expenditure" = "Research and development expenditure (% of GDP)",
+  "Government debt" = "Central government debt, total (% of GDP)",
+  "Unemployment" = "Unemployment, total (% of total labor force) (national estimate)",
+  "Trade balance" = "Net trade in goods and services (BoP, current US$)",
+  "Ages 15-64 proportion" = "Population ages 15-64 (% of total population)",
+  "Population" = "Population, total",
+  "HDI" = "HDI Score",
+  "Political stability" = "Political Stability and Absence of Violence/Terrorism: Estimate",
+  "Rule of law" = "Rule of Law: Estimate",
+  "Voice and accountability" = "Voice and Accountability: Estimate"
+)
+
+# Rearrange columns to the specified order
+rearranged_data <- combined_data_cleaned %>%
+  rename(all_of(variables_to_rename)) %>%
+  select(all_of(names(variables_to_rename))) %>%
+  arrange(`Country name`, Year) %>%
+  mutate(across(Year:`Voice and accountability`, as.numeric)) %>%
+  drop_na(Region)
+
+glimpse(rearranged_data)
+```
+
+```{r}
+write_csv(rearranged_data, "../../data/data_final.csv")
+```
+

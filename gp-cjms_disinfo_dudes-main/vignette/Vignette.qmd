@@ -1,0 +1,128 @@
+---
+title: "Exploring Global Development Data"
+author: Development Dudes (Murtaza Jawid, Josiah Gottfried, Suyash Pasi, Conner Parker)
+date: "`r Sys.Date()`"
+output: 
+  html:
+    df_print: paged
+    toc: true
+    toc_float: true
+    embedded-resources: true
+    self-contained: true
+---
+
+# Introduction
+
+The "Development Differences Visualizer" R Shiny App allows users to explore and compare economic development indicators across countries worldwide. This tutorial will guide you through using the app to extract meaningful insights about global development.
+
+This app is designed for individuals interested in understanding global economic trends without requiring advanced statistical knowledge. It enables users to visualize comparisons and analyze economic outcomes across nations.
+
+# Installation and Setup
+
+To get started, ensure you have the following R packages installed: Shiny, Ggplot2, Tidyverse, Plotly, Readxl, and Dplyr.
+
+# Data Overview
+
+The primary data sources for the "Development Differences Visualizer" app include:
+
+-   HDR Composite Indices: Complete time series data from HDR (Human Development Reports), providing a comprehensive set of indicators for various countries.
+
+-   World Bank Data: A collection of development indicators from the World Bank, which includes economic, social, and governance indicators.
+
+-   Polity Data: Data concerning political structures and stability, offering insights into the governance quality of different countries.
+
+-   World Bank Classification: Classifies countries based on income, region, and other socioeconomic factors.
+
+## Data Structure
+
+The app utilizes multiple data frames derived from the raw datasets, which undergo several stages of cleaning and transformation:
+
+HDR Data Cleaning:
+
+Selection of relevant columns from the HDR dataset. Renaming columns for consistency and clarity. Pivoting HDI score columns to a long format with pivot_longer() function, including conversion of years to numeric format. A glimpse into the cleaned HDR data is provided to check the structure and cleanliness.
+
+World Bank Data Integration:
+
+Merging of World Bank Data with Polity data. Removal of extraneous columns and renaming of year columns. Pivoting data to a long format for more accessible analysis and filtering for years post-1960. Further pivoting of Series Name columns to a wide format.
+
+Combined Dataset Creation:
+
+Joining the cleaned HDR data with the World Bank data to create a comprehensive dataset. Renaming and selecting relevant columns, focusing on key economic and demographic indicators. Rearranging data columns to facilitate user understanding and analysis. Converting key variables to numeric format to ensure accurate statistical computations. Dropping missing values for the Region column to ensure data quality.
+
+## Number of Observations
+
+The "Development Differences Visualizer" app processes a rich and diverse set of data, spanning multiple decades and covering a wide range of development indicators. The data is organized as follows:
+
+-   HDR Data (hdr_data_cleaned): Consists of 6,592 observations, each representing an annual record for a country, across 5 variables.
+
+-   Polity Data (polity_data): Contains 798 observations with detailed political data across 67 variables.
+
+-   Combined World Bank Data (world_bank_data_wide): Features 16,758 observations in a wide format, offering a broad perspective with 14 variables.
+
+-   Rearranged and Combined Data (rearranged_data): The final cleaned dataset that the app uses has a substantial 393,120 observations across 13 variables, indicating a comprehensive and extensive data collection process.
+
+These observations provide a robust foundation for the app's analytic capabilities, allowing users to explore development data from 1960 to 2022
+
+# Exploratory Data Analysis (EDA)
+
+## Tab 2: Economic Data Visualizer
+
+![](www/image 2.png)
+
+This interface allows selecting and comparing economic data between countries.
+
+There are two drop-down menus for selecting countries:
+
+-   Users can select from a range of economic and human development variables including GDP, R&D Expenditure, Government Debt, HDI, Rule of Law, and others. This feature allows users to select multiple indicators at the same time, which will create multiple plots accordingly.
+
+-   In the View mode, users choose from comparing the indicators for both countries or a single plot that measures the difference between two countries.
+
+-   Users can also Normalize values to 100 in reference year, which will show data in normalized values as per a particular reference year which can be chosen using the slider Reference Year at the bottom.
+
+# Statistical Analysis
+
+## Tab 3: Development Visualizer
+
+![](www/image B.png)
+
+This interface allows users to select a region and create a statistical model that compares economic and human development for a specific year:
+
+-   The first drop-down menu selects the year.
+
+-   The second selects the region the user wants an analysis of. They can choose from South Asia, North America, Sub-Saharan Africa, and others. Users can also select all regions.
+
+-   The third drop-down menu selects the X variable for the model, the user can select several indicators including GDP, R&D Expenditure, Government Debt, HDI, Rule of Law, etc.
+
+-   The fourth allows for the select of a Y Variable, with the same choices for indicators as the X variable menu .
+
+-   Users can also select the color drop-down to color-code the data points on a chart based on their chosen indicator.
+
+-   The Size drop-down changes the size of data points according to the indicator selected. Users can also log the variables using the log scale X and log scale Y options, along with running a linear regression.
+
+# References and Additional Resources
+
+## Human Development Report (2020). United Nations Development Programme.
+
+-   This annual report provides comprehensive statistics on various human development indices, including economic performance, social progress, and environmental sustainability. It is a key resource for understanding the broad context in which individual countries develop.
+
+-   The insights from this report can help in providing contextual explanations for the trends and patterns observed in the app's visualizations. It can also be used to validate the app's data and analysis against established global standards.
+
+-   United Nations Development Programme. (2020). Human Development Report 2020: The Next Frontier: Human Development and the Anthropocene. https://hdr.undp.org/content/human-development-report-2020
+
+## The World Development Report (2021). The World Bank.
+
+-   This report delves into data analytics and decision-making processes in the context of economic development.
+
+-   The methodologies and findings in this report can offer a conceptual framework for the app's statistical models and data analysis features. It can guide users in interpreting the economic data within the broader scope of global technological and policy trends.
+
+<!-- -->
+
+-   The World Bank. (2021). World Development Report 2021: Data for Better Lives. https://www.worldbank.org/en/publication/wdr2021
+
+## "Governance and Development." (1992). World Bank Policy Research Report.
+
+-   This seminal report explores the relationship between governance quality and development outcomes, emphasizing the importance of institutions, transparency, and rule of law.
+
+-   Given that the app includes governance indicators, this source can provide users with foundational knowledge on interpreting these variables and their impact on economic development.
+
+World Bank. (1992). Governance and Development. https://documents1.worldbank.org/curated/en/604951468739447676/pdf/multi-page.pdf

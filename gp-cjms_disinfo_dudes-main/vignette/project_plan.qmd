@@ -1,0 +1,144 @@
+---
+title: "Project Plan: Development Differences Visualizer App"
+author: "Development Dudes"
+number-sections: true
+toc: true
+code-line-numbers: true
+code-overflow: wrap
+code-link: true
+format:
+  html:
+    toc-depth: 2
+    embed-resources: true
+---
+
+## Admin
+
+Names:
+
+- Murtaza Jawid (DATA-613)
+- Josiah Gottfried (DATA-613)
+- Suyash Pasi (DATA-613)
+- Conner Parker (DATA-613)
+
+## Topic and data
+
+### Context
+
+Economic development represents a complex problem. The factors that dictate the economic performance of countries, particularly those that had similar economic backgrounds, are difficult to predict. Surprisingly, countries that have similar economic indicators may diverge from each other over time, with a country achieving socio-economic success, while the other fails to do so.
+
+We will use our Shiny application to create a comprehensive statistical model to compare and contrast the economic growth of countries to analyze the factors that led them to economic success or failure. We also will use the app to look for patterns, trends, and anomalies in the economic trajectories of different nations. Our goal is to offer an insightful, user-friendly tool that enables policymakers, researchers, and enthusiasts to explore and understand the multifaceted dimensions of economic development.
+
+### Literature review
+
+Despite predictions of economic convergence due to globalization, only some countries have caught up to developed nations. There have been some surprising cases of countries which had similar levels of economic development in the 1960s, but have very different levels today. For example, in the 1960s, Argentina had a slightly higher GDP per capita than Spain and Ghana had a slightly higher GDP per capita than South Korea, but now Spain and South Korea have much higher incomes than Argentina and Ghana, respectively (Goldin 2019). 
+
+Kalu and Kim (2014) attribute the difference in development to better cooperation between the state and the private sector and allocation of foreign aid to private companies in South Korea’s case. They also note that Ghana has been heavily dependent on primary commodity exports, whereas South Korea has succeeded in exporting manufactured goods.
+
+Irma Adelman argues that democracies lead to both rapid and equitable economic growth. Researchers Acemoglu, Robinson also posit that Healthy democracies encourage schooling, the growth of the middle class, positive economic reforms, while reducing poverty and social unrest.
+
+Countries tend to diverge rather than converge. We hope to use our project to find the factors that cause this divergence.
+
+### Data sources
+
+Response Variables:
+- GDP (current US$) - World Development Indicators (World Bank)
+- Human Development Index (HDI) - Human Development Reports
+
+Predictor Variables:
+- Central government debt, total (% of GDP) - World Development Indicators
+- Research and development expenditure (% of GDP) - World Development Indicators
+- Unemployment, total (% of total labor force) (national estimate) - World Development Indicators
+- Inflation, consumer prices (annual %) -World Development Indicators
+- Net trade in goods and services (BoP, current US$) - World Development Indicators
+- Population ages 15-64, total - Population estimates and projections
+- Combined Polity Score - Systemic Peace - Polity 5 scores
+
+Links:
+
+- [World Development Indicators](https://databank.worldbank.org/source/world-development-indicators)
+
+- [Human Development Reports](https://hdr.undp.org/data-center/human-development-index#/indicies/HDI)
+
+- [World Bank - Population estimates and projections](https://databank.worldbank.org/source/population-estimates-and-projections/preview/on)
+
+- [Systemic Peace - Polity 5 scores](https://www.systemicpeace.org/inscrdata.html)
+
+## Use case
+
+### Actor questions of interest
+
+- Why do two similarly situated economies diverge over time? What factors cause the divergence?
+- Do exports lead to economic growth?
+- Does democracy correlate with economic growth?
+- What distinguishes higher economic growth of Spain compared to Argentina?
+- Does the size of the economy predict the well-being of an economy? 
+- What causes some countries to fail and other countries to grow? 
+- What factors indicate success? Are factors such as the working-age population, Trade Balance, Inflation, and the type of government  significant indicators of a successful country? 
+
+### Anticipated workflow
+
+The workflow will likely differ slightly depending on the actor. Researchers and academics will probably come with a research question in mind, and they can quickly use the filters and modeling option to get the answer to their question. For the general public, the Argentina-Spain case study featured on the first tab will catch their attention about the problem of diverging economic development. They will then be able to use the different filtering options to satisfy their curiosity.
+
+## Ethical review
+
+Since we will be using public data that does not include personally identifiable information, the ethics of this project are relatively straightforward. The primary ethical concern will involve maintaining transparency about the algorithm’s decision-making process and sources used. We will also be transparent about statistical finding by reporting the p-value and confidence intervals.
+
+## App concept
+
+### General layout
+
+There will be two tabs on the app. The first tab will show a comparison of two countries. The app will default to a comparison of Argentina and Spain, considering their GDP levels over time and various other social and economic indicators. The user will be able to select what variables they are interested in plotting and putting into models. Plots available will include histograms, scatter plots, and bar plots. Quantitative variables can be analyzed with linear regression. Qualitative data can be analyzed with ANOVA.
+
+The second tab will focus on indicators. Users can look at data from all countries or filter to look at particular regions or countries of interest. For example, the user could look at the global correlation between GDP growth and government debt.
+
+### Data selection and manipulation
+
+The user can select variables and use different scales like log scale to get better plots. The user will be able to filter data by criteria such as country, date, region, and government type.
+
+### Exploratory numerical/graphical analysis
+
+The user can make various plots like scatter plot and bar plot to visualize the relationships between different variables. 
+
+### Statistical models and tests
+
+The application can be used to create linear regression statistical models for comparing different economic predictors against response variables such as GDP and HDI. Users can also do ANOVA testing on qualitative variables.
+
+## Collaboration
+
+### Group member names and responsibilities
+
+- Suyash: Data Collection and Preliminary Analysis
+- Josiah: Responsible for Algorithm Development and Testing
+- Murtaza: In charge of User Interface and Experience
+- Conner: Overseeing Project Management, Integration, and Miscellaneous Task Support
+
+### Team workflow
+
+We will use the shared repository model. We will utilize collaborative tools such as GitHub to facilitate efficient workflow management, code sharing, and version control. Every time we work on the project, we will run git pull to get the most up to date version of the code, then git branch. When we are ready to submit our changes, we will run git pull to check that the code is up to date, then git push to GitHub.
+
+### Schedule
+
+Week 10/30: Submit Project Plan, gather more data and possibly meet with Professor Ressler for queries
+
+Week 11/6: Work on data preparation and initial code for Shiny, finish peer review
+
+Week 11/13: Finalize initial code and test and debug, submit progress report
+
+Week 11/20: Code Cutoff, Produce Vignette
+
+Week 11/27: Final testing, bug fixing, and user feedback incorporation
+
+Week 12/4: Project wrap-up, documentation, and presentation preparation.
+
+## References
+
+Acemoglu, Daron., and James A. Robinson. Why Nations Fail : the Origins of Power, Prosperity, and Poverty. 1st ed. New York: Crown Publishers, 2012.
+
+Adelman, Irma, and Cynthia Taft Morris. “A Factor Analysis of the Interrelationship Between Social and Political Variables and Per Capita Gross National Product.” The Quarterly Journal of Economics 79, no. 4 (1965): 555–78. https://doi.org/10.2307/1880652.
+
+Goldin, Ian. (2019). Why Do Some Countries Develop and Others Not?. In: Dobrescu, P. (eds) Development in Turbulent Times. Springer, Cham. https://doi.org/10.1007/978-3-030-11361-2_2
+
+Kalu, Kolechi A., and Jiyoung Kim. State–business relations, foreign aid, and development: a comparative study of Ghana and South Korea. Korean Soc Sci J (2014) 41:113–134. https://doi.org/10.1007/s40483-014-0018-1 
+
+Parente, Stephen L., and Edward C. Prescott. Barriers to Riches / Stephen L. Parente and Edward C. Prescott. 1st MIT Press ed. Cambridge, Mass.: MIT, 2002.

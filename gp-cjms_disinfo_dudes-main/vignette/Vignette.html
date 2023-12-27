@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.353">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Development Dudes (Murtaza Jawid, Josiah Gottfried, Suyash Pasi, Conner Parker)">
+
+<title>Exploring Global Development Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Vignette_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Vignette_files/libs/quarto-html/quarto.js"></script>
+<script src="Vignette_files/libs/quarto-html/popper.min.js"></script>
+<script src="Vignette_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Vignette_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Vignette_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Vignette_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Vignette_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Vignette_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Vignette_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Exploring Global Development Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Development Dudes (Murtaza Jawid, Josiah Gottfried, Suyash Pasi, Conner Parker) </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Invalid Date</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The “Development Differences Visualizer” R Shiny App allows users to explore and compare economic development indicators across countries worldwide. This tutorial will guide you through using the app to extract meaningful insights about global development.</p>
+<p>This app is designed for individuals interested in understanding global economic trends without requiring advanced statistical knowledge. It enables users to visualize comparisons and analyze economic outcomes across nations.</p>
+</section>
+<section id="installation-and-setup" class="level1">
+<h1>Installation and Setup</h1>
+<p>To get started, ensure you have the following R packages installed: Shiny, Ggplot2, Tidyverse, Plotly, Readxl, and Dplyr.</p>
+</section>
+<section id="data-overview" class="level1">
+<h1>Data Overview</h1>
+<p>The primary data sources for the “Development Differences Visualizer” app include:</p>
+<ul>
+<li><p>HDR Composite Indices: Complete time series data from HDR (Human Development Reports), providing a comprehensive set of indicators for various countries.</p></li>
+<li><p>World Bank Data: A collection of development indicators from the World Bank, which includes economic, social, and governance indicators.</p></li>
+<li><p>Polity Data: Data concerning political structures and stability, offering insights into the governance quality of different countries.</p></li>
+<li><p>World Bank Classification: Classifies countries based on income, region, and other socioeconomic factors.</p></li>
+</ul>
+<section id="data-structure" class="level2">
+<h2 class="anchored" data-anchor-id="data-structure">Data Structure</h2>
+<p>The app utilizes multiple data frames derived from the raw datasets, which undergo several stages of cleaning and transformation:</p>
+<p>HDR Data Cleaning:</p>
+<p>Selection of relevant columns from the HDR dataset. Renaming columns for consistency and clarity. Pivoting HDI score columns to a long format with pivot_longer() function, including conversion of years to numeric format. A glimpse into the cleaned HDR data is provided to check the structure and cleanliness.</p>
+<p>World Bank Data Integration:</p>
+<p>Merging of World Bank Data with Polity data. Removal of extraneous columns and renaming of year columns. Pivoting data to a long format for more accessible analysis and filtering for years post-1960. Further pivoting of Series Name columns to a wide format.</p>
+<p>Combined Dataset Creation:</p>
+<p>Joining the cleaned HDR data with the World Bank data to create a comprehensive dataset. Renaming and selecting relevant columns, focusing on key economic and demographic indicators. Rearranging data columns to facilitate user understanding and analysis. Converting key variables to numeric format to ensure accurate statistical computations. Dropping missing values for the Region column to ensure data quality.</p>
+</section>
+<section id="number-of-observations" class="level2">
+<h2 class="anchored" data-anchor-id="number-of-observations">Number of Observations</h2>
+<p>The “Development Differences Visualizer” app processes a rich and diverse set of data, spanning multiple decades and covering a wide range of development indicators. The data is organized as follows:</p>
+<ul>
+<li><p>HDR Data (hdr_data_cleaned): Consists of 6,592 observations, each representing an annual record for a country, across 5 variables.</p></li>
+<li><p>Polity Data (polity_data): Contains 798 observations with detailed political data across 67 variables.</p></li>
+<li><p>Combined World Bank Data (world_bank_data_wide): Features 16,758 observations in a wide format, offering a broad perspective with 14 variables.</p></li>
+<li><p>Rearranged and Combined Data (rearranged_data): The final cleaned dataset that the app uses has a substantial 393,120 observations across 13 variables, indicating a comprehensive and extensive data collection process.</p></li>
+</ul>
+<p>These observations provide a robust foundation for the app’s analytic capabilities, allowing users to explore development data from 1960 to 2022</p>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level1">
+<h1>Exploratory Data Analysis (EDA)</h1>
+<section id="tab-2-economic-data-visualizer" class="level2">
+<h2 class="anchored" data-anchor-id="tab-2-economic-data-visualizer">Tab 2: Economic Data Visualizer</h2>
+<p><img src="www/image%202.png" class="img-fluid"></p>
+<p>This interface allows selecting and comparing economic data between countries.</p>
+<p>There are two drop-down menus for selecting countries:</p>
+<ul>
+<li><p>Users can select from a range of economic and human development variables including GDP, R&amp;D Expenditure, Government Debt, HDI, Rule of Law, and others. This feature allows users to select multiple indicators at the same time, which will create multiple plots accordingly.</p></li>
+<li><p>In the View mode, users choose from comparing the indicators for both countries or a single plot that measures the difference between two countries.</p></li>
+<li><p>Users can also Normalize values to 100 in reference year, which will show data in normalized values as per a particular reference year which can be chosen using the slider Reference Year at the bottom.</p></li>
+</ul>
+</section>
+</section>
+<section id="statistical-analysis" class="level1">
+<h1>Statistical Analysis</h1>
+<section id="tab-3-development-visualizer" class="level2">
+<h2 class="anchored" data-anchor-id="tab-3-development-visualizer">Tab 3: Development Visualizer</h2>
+<p><img src="www/image%20B.png" class="img-fluid"></p>
+<p>This interface allows users to select a region and create a statistical model that compares economic and human development for a specific year:</p>
+<ul>
+<li><p>The first drop-down menu selects the year.</p></li>
+<li><p>The second selects the region the user wants an analysis of. They can choose from South Asia, North America, Sub-Saharan Africa, and others. Users can also select all regions.</p></li>
+<li><p>The third drop-down menu selects the X variable for the model, the user can select several indicators including GDP, R&amp;D Expenditure, Government Debt, HDI, Rule of Law, etc.</p></li>
+<li><p>The fourth allows for the select of a Y Variable, with the same choices for indicators as the X variable menu .</p></li>
+<li><p>Users can also select the color drop-down to color-code the data points on a chart based on their chosen indicator.</p></li>
+<li><p>The Size drop-down changes the size of data points according to the indicator selected. Users can also log the variables using the log scale X and log scale Y options, along with running a linear regression.</p></li>
+</ul>
+</section>
+</section>
+<section id="references-and-additional-resources" class="level1">
+<h1>References and Additional Resources</h1>
+<section id="human-development-report-2020.-united-nations-development-programme." class="level2">
+<h2 class="anchored" data-anchor-id="human-development-report-2020.-united-nations-development-programme.">Human Development Report (2020). United Nations Development Programme.</h2>
+<ul>
+<li><p>This annual report provides comprehensive statistics on various human development indices, including economic performance, social progress, and environmental sustainability. It is a key resource for understanding the broad context in which individual countries develop.</p></li>
+<li><p>The insights from this report can help in providing contextual explanations for the trends and patterns observed in the app’s visualizations. It can also be used to validate the app’s data and analysis against established global standards.</p></li>
+<li><p>United Nations Development Programme. (2020). Human Development Report 2020: The Next Frontier: Human Development and the Anthropocene. https://hdr.undp.org/content/human-development-report-2020</p></li>
+</ul>
+</section>
+<section id="the-world-development-report-2021.-the-world-bank." class="level2">
+<h2 class="anchored" data-anchor-id="the-world-development-report-2021.-the-world-bank.">The World Development Report (2021). The World Bank.</h2>
+<ul>
+<li><p>This report delves into data analytics and decision-making processes in the context of economic development.</p></li>
+<li><p>The methodologies and findings in this report can offer a conceptual framework for the app’s statistical models and data analysis features. It can guide users in interpreting the economic data within the broader scope of global technological and policy trends.</p></li>
+</ul>
+<!-- -->
+<ul>
+<li>The World Bank. (2021). World Development Report 2021: Data for Better Lives. https://www.worldbank.org/en/publication/wdr2021</li>
+</ul>
+</section>
+<section id="governance-and-development.-1992.-world-bank-policy-research-report." class="level2">
+<h2 class="anchored" data-anchor-id="governance-and-development.-1992.-world-bank-policy-research-report.">“Governance and Development.” (1992). World Bank Policy Research Report.</h2>
+<ul>
+<li><p>This seminal report explores the relationship between governance quality and development outcomes, emphasizing the importance of institutions, transparency, and rule of law.</p></li>
+<li><p>Given that the app includes governance indicators, this source can provide users with foundational knowledge on interpreting these variables and their impact on economic development.</p></li>
+</ul>
+<p>World Bank. (1992). Governance and Development. https://documents1.worldbank.org/curated/en/604951468739447676/pdf/multi-page.pdf</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,66 @@
+---
+title: "Peer Review: Spotify"
+author: "Conner Parker, Josiah Gottfried, Suyash Pasi, Murtaza Jawid"
+number-sections: true
+toc: true
+code-line-numbers: true
+code-overflow: wrap
+code-link: true
+format:
+  html:
+    toc-depth: 2
+    embed-resources: true
+---
+
+## Introduction
+
+Date: N/A (email exchange)
+
+Participants:
+
+- Spotify team
+  - Candy Fung
+  - Mina Choudhury
+- Development team
+  - Conner Parker
+  - Josiah Gottfried
+
+## Summary
+
+### Strengths
+
+The Spotify Team's Project Proposal seemed to hit all the key areas, including a clear description of the topic/data, a thorough literature review, and an interesting use case and Shiny App concept. The team seems to have divided their tasks evenly, and has a solid approach for collaboration.
+
+Not only does the project plan seems well thought out and organized, but the topic is very interesting and useful. Once a final product is completed, we can see ourselves spending a good deal of time playing around with this application and discovering new musicians and artists that fall in line with our unique music tastes and interests. The idea to integrate sentiment analysis into this sort of app seems like an innovative approach to provide music recommendations, and I would imagine this is very similar to how Spotify's backend operates when you set your playlist on the "smart-shuffle" setting.
+
+### Areas for Improvement
+
+The peer-reviewers had a series of questions that mainly revolved around app functionality and data management concerns, and these questions could serve as potential areas for improvement. We think some additional comparative analysis features could be useful.
+
+### Questions
+
+- Would it be convenient for the user to compare artists?
+- Could the user select multiple artists at once?
+- What if the user is most interested in finding the artist who scores the highest on a certain metric?
+- Does the Spotify dataset record sentiment analysis information, or will you run your own sentiment analysis model?
+- What algorithm will determine which songs to recommend for each artist?
+- How easily can the app's database be updated to ensure that the users receive the most current information regarding their favorite artists?
+- Will this app enable you to search key words to see what songs include those words in the lyrics?
+- How will the app manage discrepancies in data, such as different songs with the same name but by different artists, or multiple versions of the same song?
+- Does the Spotify data set include every song and artist on Spotify? If not, what are the limitations of the data?
+
+## Recommendations
+
+We have a few recommendations related to user experience.
+
+- We recommend development of a feature that allows for comparison of individual artists, potentially through a tabbed or side-by-side layout to enhance user experience. 
+- We recommend allowing users to select multiple artists and rank them based on specific metrics.
+- A tabbed layout could be easier to navigate than a vertical layout.
+
+Additionally, we have a couple of recommendations for the internal workings of the app.
+
+- For sentiment analysis, we suggest using a pre-trained model such as [SiEBERT](https://huggingface.co/siebert/sentiment-roberta-large-english).
+- A simple word cloud could also be useful.
+- We recommend establishing a regular update mechanism for the app's database is essential.
+- The project should include a strategy to manage discrepancies in song data and define.
+- The project should define the scope of the dataset and communicate any limitations in the dataset to users.

@@ -1,0 +1,110 @@
+---
+title: "Progress Report: Development Differences Visualizer App"
+author: "Development Dudes"
+number-sections: true
+toc: true
+code-line-numbers: true
+code-overflow: wrap
+code-link: true
+format:
+  html:
+    toc-depth: 2
+    embed-resources: true
+---
+
+## Admin
+
+App Name:
+Development Differences Visualizer
+
+Contributor Names:
+
+-   Murtaza Jawid (DATA-613)
+-   Josiah Gottfried (DATA-613)
+-	  Suyash Pasi (DATA-613)
+- 	Conner Parker (DATA-613)
+
+## Topic and data 
+
+**Updates on the context, problem, use case, or literature review:**
+The peer review discussion helped us to clarify the intended users for our app. We do not expect our users to necessarily have statistical literacy, so we will shy away from complicated models that could raise ethical considerations. For example, we decided against a suggestion from our peer reviewers to use machine learning tools to create predictions of the impact of certain economic policies. We believe that it is unlikely that our machine learning model could make predictions with high confidence, and users who are not trained in statistics may not understand how to interpret metrics on the confidence of predictions.
+
+## Ethical review
+
+Since we will be using public data that does not include personally identifiable information, the ethics of this project are relatively straightforward. There may be limitations to the data, with certain countries with gaps in key indicators. This might give a skewed interpretation of their economic outcomes, leading to inaccurate interpretations. Another ethical concern will involve maintaining transparency about the algorithm’s decision-making process and sources used. We will also be transparent about statistical finding by reporting the p-value and confidence intervals
+
+## App design
+
+### Specify Layout with major panels and their content
+
+- Instructions/Tutorial Tab
+  - This tab will outline the content and features of the app, detailing its purpose, usage, and outcomes.
+  - The tab will also provide a tutorial for users who are not familiar with the operations of shiny applications. The tutorial will present a series of images, detailing a step-by-step process on how to use the app effectively. 
+- Country Comparison Tab
+  - This tab will have a sidebar layout with dropdown menus that allow the user to choose a pair of countries along with a set of economic variables.
+The main page will display the results of the selection with a time series plot, highlighting the differences between the economic indicators of both countries.
+  - There will be an interpretation section below the statistical models, detailing the results of the model.
+- Development Visualizer Tab
+  - This tab will have a sidebar layout with a dropdown menu that has a list of countries along with a set of economic variables. The user can compare all countries against economic indicators of their choosing to create statistical models.
+  - The main page will display the results of the selection, highlighting the differences between the economic indicators of the chosen countries.
+There will be an interpretation section below the statistical models, detailing the results of the model.
+ 
+### Final Options for user exploratory numerical/graphical analysis
+
+- Country comparison tab
+  - The country comparison tab will allow in-depth comparison of two countries.
+  - The users will choose the countries. Once the user chooses one country to analyze, the app will automatically give suggestions for countries with a similar level of development to the first country. Then the user can pick the second country.
+  - There will be a time series plot showing the trend of indicators for the two countries. The user will have options to choose the indicators and manipulate the plot.
+  - Users can choose whether to use a log scale for both x and y axes.
+  - Users can choose whether to look at both countries or the difference between the two countries.
+  - Users can choose a second variable to plot over the first variable for a preliminary analysis of correlations.
+  - Users can choose whether to look at the actual values or normalize the values to be 100 in a reference year.
+- Development visualizer tab
+  - The development visualizer tab will allow comparison of variables across all countries.
+  - Users can choose to filter the countries by region.
+  - There will be a scatter plot, and the X and Y variables can be chosen by the user. The user can also choose whether to color or size the points by a third variable.
+  - Users can choose whether to use a log scale for both x and y axes.
+  - Users can choose whether to run a linear regression.
+
+### Final Options for user statistical models and tests
+
+- Linear Regression model: 
+  - This will help us to find the relationship between dependent variable and selected predictors/independent variables
+- Statistical Summary: 
+  - This shows statistical summaries of each model such as coefficients, R-square and p-values to assess significance of the predictors in the model. 
+- Plots: 
+  - Users can plot the statistical models and add smoother.
+
+## Demonstration outline and responsibilities
+
+Conner: Introduction and project motivation (2 Minutes)
+  -   Context of the problem
+  -   Intended user
+  -   What kinds of insights users can be expected to have
+
+Suyash: Data Description (instructions tab) (3 Minutes)
+  -   Explanation of WB data and how the data was obtained
+  -   “As of” date
+  -   Gaps in the data
+  -   Assumptions and limitations of the data
+
+Murtaza: User Interface and Experience (overview of all the tabs) (4 Minutes) 
+  -   How to make choices and rationales for choices
+  -   How to interpret results
+
+Josiah [presenting remotely]: Algorithms and Models (demonstrating models and explaining back end) (4 Minutes)
+  -   How to make choices and rationales for choices
+  -   How to interpret results
+  -   Need to ensure screen sharing is set up
+
+Conner: Conclusion (Limitations and Ethical Review) (2 Minutes)
+  -   Summary of use case, data sources, and how the user can conduct analysis
+  -   Highlight limitations and ethical considerations
+
+
+
+## Risk assessment mitigation
+
+A major risk to completing the project is an inability to meet the deadlines we have set for yourselves. We have been able to meet regularly so far, and plan to do so in the future as well. Project members regularly update the group if they are unable to attend meetings in advance, and have zoom meetings when they can’t physically make it to campus. We hope to continue following this style of working throughout development.
+
+## Collaboration
